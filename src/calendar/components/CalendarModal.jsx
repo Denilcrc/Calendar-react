@@ -88,7 +88,7 @@ export const CalendarModal = () => { //se exporta al calendarPage
 
         if (formValues.title.length <= 0) return;
 
-        console.log(formValues)
+        // console.log(formValues)
         //todo: Cerrar modal, remover errores en patalla
         await startSavingEvent(formValues);
         closeDateModal();

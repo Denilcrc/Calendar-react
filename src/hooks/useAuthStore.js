@@ -3,6 +3,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import calendarApi from "../api/calendarApi";
 import { clearErrorMessage, onChecking, onLogin, onLogout } from "../store/auth/authSlice";
+import { onLogoutCalendar } from "../store/calendar/calendarSlice";
 
 export const useAuthStore = () => {
   
@@ -19,7 +20,7 @@ export const useAuthStore = () => {
             
             const {data} = await calendarApi.post('/auth', {email, password}); //? email, password es el body, data viene de la resp
             // console.log({resp});
-            localStorage.setItem('token', data.token);
+            localStorage.setItem('token', data.token); //? puede ser en la coockies
             localStorage.setItem('token-init-date', new Date().getTime()); //para darnos una idea de si el token es valido
             dispatch(onLogin({name: data.name, uid: data.uid})) //? ver esto con las redux toolkit de google
 
@@ -43,7 +44,7 @@ export const useAuthStore = () => {
             
             const {data} = await calendarApi.post('/auth/new', {name, email, password})
 
-            localStorage.setItem('token', data.token);
+            localStorage.setItem('token', data.token); //? puede ser en la coockies
             localStorage.setItem('token-init-date', new Date().getTime()); //para darnos una idea de si el token es valido
             dispatch(onLogin({name: data.name, uid: data.uid}))
 
@@ -65,11 +66,11 @@ export const useAuthStore = () => {
         try {
 
             const {data} = await calendarApi.get('auth/renew');
-            console.log(data);
-            localStorage.setItem('token', data.token);
+            // console.log(data);
+            localStorage.setItem('token', data.token); //? puede ser en la coockies
             localStorage.setItem('token-init-date', new Date().getTime()); //para darnos una idea de si el token es valido
             dispatch(onLogin({name: data.name, uid: data.uid}))
-
+            
         } catch (error) {
 
             localStorage.clear();
@@ -78,6 +79,12 @@ export const useAuthStore = () => {
         }
 
     };
+
+    const startLogout = () => {
+        localStorage.clear();
+        dispatch(onLogout());
+        dispatch(onLogoutCalendar())
+    }
 
     return {
         //* PROPIEDADES
@@ -89,6 +96,7 @@ export const useAuthStore = () => {
         startLogin, //usamos en loginpage
         startRegister, //usamos en loginPage
         checkAuthToken, //usamos en appRouter
+        startLogout, //usamos en navbar
     } 
 };
 

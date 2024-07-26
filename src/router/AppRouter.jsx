@@ -19,10 +19,11 @@ export const AppRouter = () => {
         )
     };
 
-    // const status = 'authenticated'
+    // const status = 'authenticated';
 
     return (
         
+        //? estos routes sirve como poteccion de rutas ya que por mas que el usuario se recuerde de las rutas no dependen de eso si no de el status
         <Routes>
             {
                 (status === 'not-authenticated')
